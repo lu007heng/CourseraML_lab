@@ -23,7 +23,26 @@ sigma = 0.3;
 %        mean(double(predictions ~= yval))
 %
 
+candidate = [0.01 0.03 0.1 0.3 1 3 10 30];
 
+model = svmTrain(X, y, C, @(x1, x2) gaussianKernel(x1, x2, sigma));
+
+predictions = svmPredict(model, Xval);
+
+mark = mean(double(predictions ~= yval));
+
+for c = candidate
+	for s = candidate
+		model = svmTrain(X, y, c, @(x1, x2) gaussianKernel(x1, x2, s));
+		predictions = svmPredict(model, Xval);
+		m = mean(double(predictions ~= yval));
+        if m<mark
+			C = c;
+			sigma = s;
+			mark = m;
+		end
+	end
+end
 
 
 
