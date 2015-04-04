@@ -20,12 +20,19 @@ sigma2 = zeros(n, 1);
 %               the data for the i-th feature and sigma2(i)
 %               should contain variance of the i-th feature.
 %
+summer = zeros(1, n);
+for i = 1:m
+	summer = summer + X(i, :);
+end
 
+mu = (summer ./ m)';
 
+sigma_sum = zeros(1, n);
+for i = 1:m
+	sigma_sum = sigma_sum + (X(i, :) - mu').^2;
+end
 
-
-
-
+sigma2 = (sigma_sum ./ m)';
 
 
 
